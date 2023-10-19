@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ExhibitonList from "./pages/ExhibitonList";
+import MyPage from "./pages/MyPage";
+import Recommend from "./pages/Recommend";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import LogIn from "./pages/LogIn";
+import Rating from "./pages/Rating";
+import SignUpComplete from "./pages/SignUpComplete";
+import Welcome from "./pages/Welcome";
+import NavBarElement from "./components/common/NavBarElement";
+import NavContainer from "./containers/common/NavContainer";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <NavContainer />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/LogIn" element={<LogIn />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/ExhibitonList" element={<ExhibitonList />} />
+        <Route path="/MyPage" element={<MyPage />} />
+        <Route path="/Recommend" element={<Recommend />} />
+        <Route path="/Rating" element={<Rating />} />
+        <Route path="/SignUpComplete" element={<SignUpComplete />} />
+        <Route path="/Welcome" element={<Welcome />} />
+      </Routes>
+    </Router>
   );
 }
 
