@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { changeField, initializeForm, login } from "../../modules/auth";
-import AuthForm from "../../components/auth/AuthForm";
+import { changeField, initializeForm, findid } from "../../modules/auth";
 import { useNavigate } from "react-router-dom";
 import { check } from "../../modules/user";
+import FindAuthForm from "../../components/auth/FindAuthForm";
 
-const LoginForm = ({ history }) => {
+const FindIDForm = ({ history }) => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
-    form: auth.login,
-    auth: auth.auth,
+    // auth->modules에서 auth.js 파일에 있는
+    form: auth.findid, // auth에서 loning 모듈을 가져옴
+    auth: auth.auth, // auth에서 auth 가져옴
     authError: auth.authError,
     user: user.user,
   }));
+
   // 인풋 변경 이벤트 핸들러
   const onChange = (e) => {
     const { value, name } = e.target;
     dispatch(
       changeField({
-        form: "login",
+        form: "findid",
         key: name,
         value,
       })
@@ -29,28 +31,29 @@ const LoginForm = ({ history }) => {
   // 폼 등록 이벤트 핸들러
   const onSubmit = (e) => {
     e.preventDefault();
-    const { username, password } = form;
-    dispatch(login({ username, password }));
+    const { name, email } = form;
+    dispatch(findid({ name, email }));
   };
 
   // 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
   useEffect(() => {
-    dispatch(initializeForm("login"));
+    dispatch(initializeForm("findid"));
   }, [dispatch]);
   // useEffect로 로그인할 때 성공 실패 여부 확인
   useEffect(() => {
     if (authError) {
       console.log("오류 발생");
       console.log(authError);
-      setError("로그인 실패");
+      setError("아이디 찾기 실패");
       return;
     }
     if (auth) {
-      console.log("로그인 성공");
+      console.log("아이디 찾기 성공");
       dispatch(check());
     }
   }, [auth, authError, dispatch]);
   const navigate = useNavigate();
+  //id 를 보여주는 화면 만들기
   useEffect(() => {
     if (user) {
       navigate("/Welcome");
@@ -62,8 +65,8 @@ const LoginForm = ({ history }) => {
     }
   }, [history, user]);
   return (
-    <AuthForm
-      type="login"
+    <FindAuthForm
+      type="id"
       form={form}
       onChange={onChange}
       onSubmit={onSubmit}
@@ -72,4 +75,4 @@ const LoginForm = ({ history }) => {
   );
 };
 
-export default LoginForm;
+export default FindIDForm;

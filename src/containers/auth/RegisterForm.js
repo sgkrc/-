@@ -28,9 +28,9 @@ const RegisterForm = ({ history }) => {
   // 폼 등록 이벤트 핸들러
   const onSubmit = (e) => {
     e.preventDefault();
-    const { id, password, passwordConfirm, name, email } = form;
+    const { username, password, passwordConfirm, name, email } = form;
     // 하나라도 비어있다면
-    if ([id, password, passwordConfirm, name, email].includes("")) {
+    if ([username, password, passwordConfirm, name, email].includes("")) {
       setError("빈 칸을 모두 입력하세요.");
       return;
     }
@@ -41,7 +41,7 @@ const RegisterForm = ({ history }) => {
       changeField({ form: "register", key: "passwordConfirm", value: "" });
       return;
     }
-    dispatch(register({ id, password, name, email })); //디스패치로 액션을 리듀스로 이동
+    dispatch(register({ username, password, name, email })); //디스패치로 액션을 리듀스로 이동
   };
 
   // 컴포넌트가 처음 렌더링 될 때 form 을 초기화함

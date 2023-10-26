@@ -9,9 +9,9 @@ import LogIn from "./pages/LogIn";
 import Rating from "./pages/Rating";
 import SignUpComplete from "./pages/SignUpComplete";
 import Welcome from "./pages/Welcome";
-import NavBarElement from "./components/common/NavBarElement";
 import NavContainer from "./containers/common/NavContainer";
-
+import FindID from "./pages/FindID";
+import FindPW from "./pages/FindPW";
 function App() {
   return (
     <Router>
@@ -26,6 +26,8 @@ function App() {
         <Route path="/Rating" element={<Rating />} />
         <Route path="/SignUpComplete" element={<SignUpComplete />} />
         <Route path="/Welcome" element={<Welcome />} />
+        <Route path="/FindID" element={<FindID />} />
+        <Route path="/FindPW" element={<FindPW />} />
       </Routes>
     </Router>
   );

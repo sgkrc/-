@@ -5,7 +5,7 @@ import palette from "../../lib/styles/palette";
 import Button from "../common/Button";
 
 /**
- * 회원가입 또는 로그인 폼을 보여줍니다.
+ * 아이디 또는 비밀번호 찾기 폼을 보여줍니다.
  */
 
 const AuthFormBlock = styled.div`
@@ -55,8 +55,8 @@ const ButtonWithMarginTop = styled(Button)`
 `;
 
 const textMap = {
-  login: "로그인",
-  register: "회원가입",
+  id: "아이디 찾기",
+  password: "비밀번호 찾기",
 };
 
 /**
@@ -68,44 +68,15 @@ const ErrorMessage = styled.div`
   font-size: 0.875rem;
   margin-top: 1rem;
 `;
-function Findinfo(type) {
-  if (type === "login") {
-    return (
-      <div>
-        <Link to="/FindID">아이디 찾기</Link>
-        <br />
-        <Link to="/FindPW">비밀 번호 찾기</Link>
-      </div>
-    );
-  }
-}
-//여기 form,onChange,onSubmit,error는 로그인이면 LoginForm에서
-const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
+
+const FindAuthForm = ({ type, form, onChange, onSubmit, error }) => {
   const text = textMap[type];
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
       <form onSubmit={onSubmit}>
-        <StyledInput
-          autoComplete="username"
-          name="username"
-          placeholder="아이디"
-          onChange={onChange}
-          value={form.username}
-        />
-        {type === "login" && (
-          <StyledInput
-            autoComplete="new-password"
-            name="password"
-            placeholder="비밀번호"
-            type="password"
-            onChange={onChange}
-            value={form.password}
-          />
-        )}
-        {type === "register" && (
+        {type === "id" && (
           <div>
-            <br />
             <StyledInput
               autoComplete="new-password"
               name="name"
@@ -114,28 +85,29 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
               value={form.name}
             />
             <StyledInput
-              autoComplete="new-password"
+              autoComplete="email"
+              name="email"
+              placeholder="이메일"
+              onChange={onChange}
+              value={form.email}
+            />
+          </div>
+        )}
+        {type === "password" && (
+          <div>
+            <br />
+            <StyledInput
+              name="name"
+              placeholder="아이디"
+              onChange={onChange}
+              value={form.username}
+            />
+            <StyledInput
               name="email"
               placeholder="이메일"
               type="email"
               onChange={onChange}
               value={form.email}
-            />
-            <StyledInput
-              autoComplete="new-password"
-              name="password"
-              placeholder="비밀번호"
-              type="password"
-              onChange={onChange}
-              value={form.password}
-            />
-            <StyledInput
-              autoComplete="new-password"
-              name="passwordConfirm"
-              placeholder="비밀번호 확인"
-              type="password"
-              onChange={onChange}
-              value={form.passwordConfirm}
             />
           </div>
         )}
@@ -145,15 +117,14 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
         </ButtonWithMarginTop>
       </form>
       <Footer>
-        {type === "login" ? (
-          <Link to="/Register">회원가입</Link>
+        {type === "id" ? (
+          <Link to="/FindPW">비밀번호 찾기</Link>
         ) : (
           <Link to="/LogIn">로그인</Link>
         )}
-        {Findinfo(type)}
       </Footer>
     </AuthFormBlock>
   );
 };
 
-export default AuthForm;
+export default FindAuthForm;

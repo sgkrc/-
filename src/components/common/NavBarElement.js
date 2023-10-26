@@ -47,6 +47,9 @@ const NavBarElement = ({ user, onLogout }) => {
             <Nav.Link href="/">Home</Nav.Link>
             <NavDropdown title="전시회" id="basic-nav-dropdown">
               <NavDropdown.Item href="/ExhibitonList">
+                전시회 목록
+              </NavDropdown.Item>
+              <NavDropdown.Item href="/ExhibitonList">
                 추천 전시회
               </NavDropdown.Item>
               <NavDropdown.Item href="/ExhibitonList">
