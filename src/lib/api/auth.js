@@ -17,7 +17,9 @@ export const check = () => client.get("/users");
 export const logout = () => client.post("/users");
 
 //아이디 찾기
-export const findID = () => client.post("/users");
+export const findID = ({ name, email }) =>
+  client.post("/users", { name, email });
 
 //비밀번호 찾기
-export const findPW = () => client.post("/users");
+export const findPW = ({ username, email }) =>
+  client.post("/users", { username, email });

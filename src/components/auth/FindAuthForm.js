@@ -97,7 +97,7 @@ const FindAuthForm = ({ type, form, onChange, onSubmit, error }) => {
           <div>
             <br />
             <StyledInput
-              name="name"
+              name="username"
               placeholder="아이디"
               onChange={onChange}
               value={form.username}

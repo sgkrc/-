@@ -72,7 +72,7 @@ export function* authSaga() {
   //이를 통해 아이디찾기과 관련된 비동기 작업을 처리할 것임을 나타냅니다.
   //요청을 처리하는 동안 중복 요청을 방지하기 위해 takeLatest를 사용하고 있습니다.
   yield takeLatest(FINDID, findIDSaga);
-  yield takeLatest(FINDID, findPWSaga);
+  yield takeLatest(FINDPW, findPWSaga);
 }
 
 const initialState = {
