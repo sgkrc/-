@@ -12,6 +12,8 @@ import Welcome from "./pages/Welcome";
 import NavContainer from "./containers/common/NavContainer";
 import FindID from "./pages/FindID";
 import FindPW from "./pages/FindPW";
+import ChangePW from "./pages/ChangePW";
+import AdminPage from "./pages/AdminPage";
 function App() {
   return (
     <Router>
@@ -28,6 +30,8 @@ function App() {
         <Route path="/Welcome" element={<Welcome />} />
         <Route path="/FindID" element={<FindID />} />
         <Route path="/FindPW" element={<FindPW />} />
+        <Route path="/ChangePW" element={<ChangePW />} />
+        <Route path="/AdminPage" element={<AdminPage />} />
       </Routes>
     </Router>
   );
