@@ -1,4 +1,4 @@
-//사용자 상태를ㄹ 담을 user 리덕스 모듈
+//사용자 상태를 담을 user 리덕스 모듈
 
 import { createAction, handleActions } from "redux-actions";
 import { takeLatest, call } from "redux-saga/effects";

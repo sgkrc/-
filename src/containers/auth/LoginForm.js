@@ -9,6 +9,7 @@ const LoginForm = ({ history }) => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
+    //auth가 로그인 실패 성공, user 가 정보
     form: auth.login,
     auth: auth.auth,
     authError: auth.authError,

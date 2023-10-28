@@ -44,8 +44,14 @@ const NavBarElement = ({ user, onLogout }) => {
       <Navbar expand="sm" className="bg-body-tertiary">
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <NavDropdown title="전시회" id="basic-nav-dropdown">
+            <Nav.Link href="/" style={{ marginRight: "50px" }}>
+              Home
+            </Nav.Link>
+            <NavDropdown
+              title="전시회"
+              style={{ marginRight: "50px" }}
+              id="basic-nav-dropdown"
+            >
               <NavDropdown.Item href="/ExhibitonList">
                 전시회 목록
               </NavDropdown.Item>
@@ -63,9 +69,15 @@ const NavBarElement = ({ user, onLogout }) => {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="/Rating">평가</Nav.Link>
-            <Nav.Link href="#recommend">취향 추천</Nav.Link>
-            <Nav.Link href="/MyPage">마이페이지</Nav.Link>
+            <Nav.Link href="/Rating" style={{ marginRight: "50px" }}>
+              평가
+            </Nav.Link>
+            <Nav.Link href="#recommend" style={{ marginRight: "50px" }}>
+              취향 추천
+            </Nav.Link>
+            <Nav.Link href="/MyPage" style={{ marginRight: "50px" }}>
+              마이페이지
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
