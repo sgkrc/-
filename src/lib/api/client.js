@@ -4,6 +4,15 @@ import axios from "axios";
 
 const client = axios.create();
 
+// export async function getGoogleRegister() {
+//   try {
+//     //
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//      //
+//     }
+//   }
+// }
 /*
   글로벌 설정 예시:
   

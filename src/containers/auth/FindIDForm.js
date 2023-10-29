@@ -7,6 +7,7 @@ import FindAuthForm from "../../components/auth/FindAuthForm";
 
 const FindIDForm = ({ history }) => {
   const [error, setError] = useState(null);
+  const [foundID, setFoundID] = useState(null); // 찾은 아이디를 저장할 상태
   const dispatch = useDispatch();
   const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
     // auth->modules에서 auth.js 파일에 있는
@@ -49,6 +50,7 @@ const FindIDForm = ({ history }) => {
     }
     if (auth) {
       console.log("아이디 찾기 성공");
+      setFoundID(auth.userId); // 찾은 아이디를 상태에 저장
       dispatch(check());
     }
   }, [auth, authError, dispatch]);
@@ -65,13 +67,25 @@ const FindIDForm = ({ history }) => {
     }
   }, [history, user]);
   return (
-    <FindAuthForm
-      type="id"
-      form={form}
-      onChange={onChange}
-      onSubmit={onSubmit}
-      error={error}
-    />
+    <div>
+      {/* 아이디를 표시하는 부분 */}
+      {foundID && <div>찾은 아이디: {foundID}</div>}
+
+      <FindAuthForm
+        type="id"
+        form={form}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        error={error}
+      />
+    </div>
+    // <FindAuthForm
+    //   type="id"
+    //   form={form}
+    //   onChange={onChange}
+    //   onSubmit={onSubmit}
+    //   error={error}
+    // />
   );
 };
 

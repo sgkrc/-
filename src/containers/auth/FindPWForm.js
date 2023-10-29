@@ -7,6 +7,7 @@ import FindAuthForm from "../../components/auth/FindAuthForm";
 
 const FindPWForm = ({ history }) => {
   const [error, setError] = useState(null);
+  const [foundPW, setFoundPW] = useState(null); // 찾은 비밀번호를 저장할 상태
   const dispatch = useDispatch();
   const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
     // auth->modules에서 auth.js 파일에 있는
@@ -50,11 +51,12 @@ const FindPWForm = ({ history }) => {
     }
     if (auth) {
       console.log("비밀번호 찾기 성공");
+      setFoundPW(auth.userPW); // 찾은 비밀번호를 상태에 저장
       dispatch(check());
     }
   }, [auth, authError, dispatch]);
   const navigate = useNavigate();
-  //id 를 보여주는 화면 만들기
+  //pw 를 보여주는 화면 만들기
   useEffect(() => {
     if (user) {
       navigate("/Welcome");
@@ -66,13 +68,17 @@ const FindPWForm = ({ history }) => {
     }
   }, [history, user]);
   return (
-    <FindAuthForm
-      type="password"
-      form={form}
-      onChange={onChange}
-      onSubmit={onSubmit}
-      error={error}
-    />
+    <div>
+      {/* 비밀번호를 표시하는 부분 */}
+      {foundPW && <div>찾은 비밀번호: {foundPW}</div>}
+      <FindAuthForm
+        type="password"
+        form={form}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        error={error}
+      />
+    </div>
   );
 };
 
