@@ -33,6 +33,9 @@ function App() {
         <Route path="/ChangePW" element={<ChangePW />} />
         <Route path="/AdminPage" element={<AdminPage />} />
       </Routes>
+      <footer>
+        <div>Copyright @artroot</div>
+      </footer>
     </Router>
   );
 }

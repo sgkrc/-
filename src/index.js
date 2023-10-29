@@ -17,7 +17,7 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
-
+sagaMiddleware.run(rootSaga);
 function loadUser() {
   try {
     const user = localStorage.getItem("user");
@@ -29,7 +29,7 @@ function loadUser() {
     console.log("localStorage is not working");
   }
 }
-sagaMiddleware.run(rootSaga);
+
 loadUser();
 const root = createRoot(document.getElementById("root")); //ReactDOM 이 업데이트 변경됨.
 root.render(
