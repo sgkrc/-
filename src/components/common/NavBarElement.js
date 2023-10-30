@@ -10,32 +10,55 @@ import {
   Form,
   Button,
 } from "react-bootstrap";
-
+import { useNavigate } from "react-router-dom";
 const UserInfo = styled.div`
   font-weight: 800;
   margin-right: 1rem;
 `;
 
 const NavBarElement = ({ user, onLogout }) => {
+  const navigate = useNavigate(); // useNavigate 훅을 통해 페이지 이동 함수를 가져옵니다.
+
+  const handleLogout = () => {
+    // 로그아웃 버튼 클릭 시 실행되는 함수
+    onLogout(); // 로그아웃 동작
+    localStorage.removeItem("user");
+    // 페이지를 리디렉션
+    navigate("/"); // 로그아웃 후 홈 페이지로 이동
+  };
   return (
     <Container>
       <br />
       <Row>
-        <Col>
-          <Navbar.Brand href="/">ArtRoot</Navbar.Brand>
+        <Col className="d-flex justify-content-center">
+          <Navbar.Brand href="/">
+            <img
+              src="images/artroot_logo.png"
+              width="100"
+              height="100"
+              alt="Artroot"
+            ></img>
+          </Navbar.Brand>
         </Col>
-        <Col xs={6}>
+        <Col
+          xs={8}
+          className="d-flex justify-content-center align-items-center"
+        >
           <Form.Control type="text" placeholder="Search" />
         </Col>
-        <Col>
+        <Col className="d-flex justify-content-center">
           {user ? (
-            <div className="right">
+            <div className="right d-flex align-items-center">
               <UserInfo>{user.username}</UserInfo>
-              <Button onClick={onLogout}>로그아웃</Button>
+              <Button onClick={handleLogout} className="btn btn-lg">
+                로그아웃
+              </Button>
             </div>
           ) : (
-            <div className="right">
-              <Button href="/LogIn">로그인</Button>
+            <div className="right d-flex align-items-center">
+              <Button href="/LogIn" className="btn btn-lg">
+                로그인
+              </Button>
             </div>
           )}
         </Col>
@@ -44,7 +67,13 @@ const NavBarElement = ({ user, onLogout }) => {
       <Navbar expand="sm" className="bg-body-tertiary">
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/" style={{ marginRight: "50px" }}>
+            <Nav.Link
+              href="/"
+              style={{
+                marginRight: "50px",
+                marginLeft: "50px",
+              }}
+            >
               Home
             </Nav.Link>
             <NavDropdown
@@ -55,7 +84,7 @@ const NavBarElement = ({ user, onLogout }) => {
               <NavDropdown.Item href="/ExhibitonList">
                 전시회 목록
               </NavDropdown.Item>
-              <NavDropdown.Item href="/ExhibitonList">
+              <NavDropdown.Item href="/Exhibitondetail">
                 추천 전시회
               </NavDropdown.Item>
               <NavDropdown.Item href="/ExhibitonList">

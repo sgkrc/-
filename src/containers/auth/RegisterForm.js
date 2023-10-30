@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { changeField, initializeForm, register } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
-import { check } from "../../modules/user";
+import { register_check } from "../../modules/user";
 import { useNavigate } from "react-router-dom";
 const RegisterForm = ({ history }) => {
   const [error, setError] = useState(null);
@@ -67,7 +67,7 @@ const RegisterForm = ({ history }) => {
     if (auth) {
       console.log("회원가입 성공");
       console.log(auth);
-      dispatch(check());
+      dispatch(register_check());
     }
   }, [auth, authError, dispatch]);
   // user 값이 잘 설정되었는지 확인
