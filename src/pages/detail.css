@@ -1,0 +1,69 @@
+.contents {
+  display: inline-block;
+  float: none;
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
+.product_detail {
+  padding: 35px 0 0;
+
+  position: relative;
+  margin: 0 auto;
+  width: 1200px;
+}
+
+.detailArea {
+  position: relative;
+  padding: 0 0 50px;
+  margin: 0;
+}
+
+.imgArea {
+  background-image: initial;
+  float: left;
+  width: 660px;
+  margin: 0;
+  padding: 0;
+}
+.product_img {
+  width: 660px;
+}
+.infoArea {
+  position: relative;
+  float: right;
+  width: 480px;
+  padding: 25px 0 0;
+  margin: 0;
+}
+.summary {
+  margin: 6px 0 8px;
+  margin-top: 20px;
+}
+.headingArea {
+  padding: 0 0 20px;
+  margin: 0 0 22px;
+  border-bottom: 1px solid;
+  line-height: 1.4;
+}
+.ev {
+  float: right;
+}
+
+.t_row {
+  padding: 5px 0 6px;
+  width: 115px;
+}
+
+table {
+  border-collapse: separate;
+  margin-top: 50px;
+}
+th,
+td {
+  padding: 0;
+}
+tr.space {
+  border-bottom: 40px solid transparent;
+}
