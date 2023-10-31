@@ -120,13 +120,34 @@ app.post("/Logout", (req, res) => {
   });
 });
 
-// check api 로그인 완료 retrun
+// check api 로그인 완료 retrun       수정 11/1
 app.get("/welcome", (req, res) => {
-  const user_id = req.body.username;
-  const user_pw = req.body.password;
+  const user_id = req.query.username; //쿼리라 {username : id} 이런 형태
+  const username = user_id.username; // id값만 추출
   // 여기에서 사용자 상태 확인 또는 필요한 데이터를 응답할 수 있습니다.
-  console.log("어서와");
-  res.json({ message: "환영합니다" });
+  const check = "SELECT * FROM user WHERE user_id = ?";
+  con.query(check, [username], (err, results) => {
+    if (err) {
+      console.error("Error in database query:", err);
+      res.status(500).json({ message: "데이터베이스 오류" });
+    } else {
+      if (results.length > 0) {
+        // 사용자 정보를 찾았을 때
+        const user = results[0];
+        res.json({
+          message: "환영합니다",
+          username: user.USER_ID,
+          password: user.USER_PW,
+          name: user.USER_NAME,
+          user_mail: user.USER_MAIL,
+        });
+      } else {
+        // 사용자 정보를 찾지 못했을 때
+        console.log("사용자 정보를 못 찾음");
+        res.status(404).json({ message: "사용자를 찾을 수 없습니다" });
+      }
+    }
+  });
 });
 
 // 회원가입 완료
