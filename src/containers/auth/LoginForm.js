@@ -48,7 +48,9 @@ const LoginForm = ({ history }) => {
     }
     if (auth) {
       console.log("로그인 성공");
-      dispatch(check());
+      const { username } = form;
+      console.log(username);
+      dispatch(check(username));
     }
   }, [auth, authError, dispatch]);
   const navigate = useNavigate();
