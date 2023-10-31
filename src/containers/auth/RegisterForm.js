@@ -74,6 +74,7 @@ const RegisterForm = ({ history }) => {
   // withRouter가 삭제됨. navigate로 확인
   const navigate = useNavigate();
   useEffect(() => {
+    console.log("User value:", user);
     if (user) {
       console.log("check api 성공");
       console.log(user);
