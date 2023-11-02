@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ExhibitionItem from "../ExhibitionItem";
-import ListGroup from "react-bootstrap/ListGroup";
+import "./home.css";
 const ExhibitonList = () => {
   const [data, setData] = useState([]);
   // const serviceKey = "636f716649676b733637714f775a68"; // 서비스 키
@@ -21,15 +21,13 @@ const ExhibitonList = () => {
     fetchData();
   }, []);
   return (
-    <div>
-      <h1>전시회 조회</h1>
+    <div className="home-container">
+      <h1>전시회 목록</h1>
       {data.length > 0 ? (
         <div>
-          <h2>전시회 목록:</h2>
           <ul>
             {data.map((exhibition, index) => (
               <li key={index}>
-                <h3>전시회 정보:</h3>
                 <ExhibitionItem
                   ART_NUM={exhibition.ART_NUM}
                   ART_NAME={exhibition.ART_NAME}

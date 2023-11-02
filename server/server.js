@@ -414,6 +414,31 @@ app.get("/AllExhibitions", (req, res) => {
   });
 });
 
+app.get("/Exhibitiondetail/:id", (req, res) => {
+  const art_num = req.params.id; // Retrieve the 'id' parameter from the URL
+
+  const sql = "SELECT * FROM exhibition where ART_NUM = ?";
+
+  con.query(sql, [art_num], (err, results) => {
+    if (err) {
+      console.log("에러 발생");
+      console.log(err);
+      return res.status(500).json({
+        error: "데이터베이스에서 전시회 정보를 가져오는 중 에러가 발생했습니다",
+      });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        error: "해당 ID로 전시회 정보를 찾을 수 없습니다",
+      });
+    }
+
+    // Respond with the first result (assuming only one result is expected)
+    res.status(200).json(results[0]);
+  });
+});
+
 // 서버 시작
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);
