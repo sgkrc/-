@@ -9,13 +9,10 @@ import { Link } from "react-router-dom";
 
 /* 화면 전체를 채움 */
 const AuthTemplateBlock = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
   background: ${palette.gray[2]};
-  /* flex로 내부 내용 중앙 정렬 */
+  margin-top: 6rem;
+  margin-bottom: 20rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +22,9 @@ const AuthTemplateBlock = styled.div`
 /* 흰색 박스 */
 const WhiteBox = styled.div`
   .logo-area {
+    width: 100px;
     display: block;
+    padding-top: 2rem;
     padding-bottom: 2rem;
     text-align: center;
     font-weight: bold;
@@ -33,7 +32,8 @@ const WhiteBox = styled.div`
   }
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.025);
   padding: 2rem;
-  width: 360px;
+  width: 400px;
+  height: 500px;
   background: white;
   border-radius: 2px;
 `;

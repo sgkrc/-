@@ -25,7 +25,6 @@ function App() {
       setIsLoggedIn(true);
     }
   }, []);
-
   return (
     <Router>
       {/* 세션 관리를 위해 Home과 LogIn은 따로 빼져 있음 주의!! */}

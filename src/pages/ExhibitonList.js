@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ExhibitonItem from "../ExhibitonItem";
+import ExhibitionItem from "../ExhibitionItem";
 import ListGroup from "react-bootstrap/ListGroup";
 const sample = {
   title: "전시회 명",
@@ -11,47 +11,58 @@ const sample = {
     "open api 정보를 호출해서 적용하기. 형식은 xml이다. 꼭 주의!!!!!!!!!",
 };
 const ExhibitonList = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   // const serviceKey = "636f716649676b733637714f775a68"; // 서비스 키
-  const onClick = async () => {
-    try {
-      const response = await axios.get(
-        "http://openapi.seoul.go.kr:8088/636f716649676b733637714f775a68/xml/ListExhibitionOfSeoulMOAInfo/1/1/"
-      );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/AllExhibitions"
+        ); // 데이터베이스에서 전시회 정보를 가져오는 엔드포인트로 변경해야 합니다.
 
-      setData(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+        setData(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div>
       <h1>전시회 조회</h1>
-      <button onClick={onClick}>버튼 누르세요</button>
-      {data && (
+      {data.length > 0 ? (
         <div>
-          <h2>API 응답 데이터:</h2>
-          <pre>{data}</pre>
+          <h2>전시회 목록:</h2>
+          <ul>
+            {data.map((exhibition, index) => (
+              <li key={index}>
+                <h3>전시회 정보:</h3>
+                <ExhibitionItem
+                  ART_NUM={exhibition.ART_NUM}
+                  ART_NAME={exhibition.ART_NAME}
+                  ART_PICTURE={exhibition.ART_PICTURE}
+                  ART_EXPLAIN={exhibition.ART_EXPLAIN}
+                  ART_START={exhibition.ART_START}
+                  ART_END={exhibition.ART_END}
+                  ART_TIME={exhibition.ART_TIME}
+                  ART_CLOSED={exhibition.ART_CLOSED}
+                  ART_PLACE={exhibition.ART_PLACE}
+                  ART_ADDR={exhibition.ART_ADDR}
+                  ART_PRICE={exhibition.ART_PRICE}
+                  ART_CALL={exhibition.ART_CALL}
+                  ART_SITE={exhibition.ART_SITE}
+                  ART_ARTIST={exhibition.ART_ARTIST}
+                  ART_PREFER={exhibition.ART_PREFER}
+                  ART_BACK={exhibition.ART_BACK}
+                />
+              </li>
+            ))}
+          </ul>
         </div>
+      ) : (
+        <p>데이터를 불러오는 중입니다...</p>
       )}
-
-      <ListGroup as="ul">
-        <ListGroup.Item as="li">
-          <ExhibitonItem info={sample} />
-        </ListGroup.Item>
-        <ListGroup.Item as="li">
-          <ExhibitonItem info={sample} />
-        </ListGroup.Item>
-        <ListGroup.Item as="li">
-          <ExhibitonItem info={sample} />
-        </ListGroup.Item>
-        <ListGroup.Item as="li">
-          <ExhibitonItem info={sample} />
-        </ListGroup.Item>
-        <ListGroup.Item as="li">
-          <ExhibitonItem info={sample} />
-        </ListGroup.Item>
-      </ListGroup>
     </div>
   );
 };
