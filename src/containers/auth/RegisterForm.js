@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { changeField, initializeForm, register } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
-import { register_check } from "../../modules/user";
+import { check } from "../../modules/user";
 import { useNavigate } from "react-router-dom";
 const RegisterForm = ({ history }) => {
   const [error, setError] = useState(null);
@@ -48,7 +48,7 @@ const RegisterForm = ({ history }) => {
   useEffect(() => {
     dispatch(initializeForm("register"));
   }, [dispatch]);
-
+  const navigate = useNavigate();
   //회원가입 성공/실패 처리
   useEffect(() => {
     //결과를 얻을 때 특정 작업을 하기 위해 useEffect 사용
@@ -67,25 +67,13 @@ const RegisterForm = ({ history }) => {
     if (auth) {
       console.log("회원가입 성공");
       console.log(auth);
-      dispatch(register_check());
+      navigate("/SignUpComplete");
+      //dispatch(register_check());
     }
   }, [auth, authError, dispatch]);
   // user 값이 잘 설정되었는지 확인
   // withRouter가 삭제됨. navigate로 확인
-  const navigate = useNavigate();
-  useEffect(() => {
-    console.log("User value:", user);
-    if (user) {
-      console.log("check api 성공");
-      console.log(user);
-      navigate("/SignUpComplete");
-    }
-    try {
-      localStorage.setItem("user", JSON.stringify(user));
-    } catch (e) {
-      console.log("localStorage is not working");
-    }
-  }, [history, user]);
+
   return (
     <AuthForm
       type="register"

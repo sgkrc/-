@@ -301,6 +301,101 @@ app.post("/FindPW", (req, res) => {
   });
 });
 
+//사용자 정보 조회
+app.get("/mypage", (req, res) => {
+  if (req.session.username) {
+    const username = req.session.username; // 세션에서 사용자 이름 가져오기
+    // 데이터베이스에서 사용자 정보 조회
+    const sql = "SELECT * FROM user WHERE USER_ID = ?";
+    con.query(sql, [username], (err, results) => {
+      if (err) {
+        console.log("에러 발생");
+        console.log(err);
+        return res.status(500).json({ error: "데이터베이스 오류" });
+      }
+      // 사용자 정보가 조회되지 않으면 오류 응답
+      if (results.length === 0) {
+        console.log("사용자 정보가 없음");
+        return res.status(404).json({ error: "사용자를 찾을 수 없습니다" });
+      }
+
+      const user = results[0]; // 데이터베이스에서 조회한 사용자 정보
+      console.log(user);
+      // 여기에서 필요한 사용자 정보를 클라이언트에게 응답할 수 있습니다.
+      const mypage = {
+        username: user.USER_ID,
+        name: user.USER_NAME,
+        email: user.USER_MAIL,
+        // 기타 사용자 정보 추가
+      };
+      res.status(200).json(mypage); // 사용자 정보 응답
+    });
+  } else {
+    // 세션에 사용자 이름이 없으면 로그인되지 않은 상태
+    res.status(401).json({ error: "로그인되지 않음" });
+  }
+});
+
+//사용자 정보 수정
+app.post("/updateMy", (req, res) => {
+  if (req.session.username) {
+    const username = req.session.username; // 세션에서 사용자 이름 가져오기
+    const updateFields = {}; // 변경할 필드를 저장할 빈 객체 생성
+
+    // 클라이언트에서 전송한 변경된 필드가 있는지 확인하고 객체에 추가
+    if (req.body.name) {
+      updateFields.USER_NAME = req.body.name;
+    }
+    if (req.body.email) {
+      updateFields.USER_MAIL = req.body.email;
+    }
+    if (req.body.newPassword) {
+      updateFields.USER_PW = req.body.newPassword;
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      // 변경된 필드가 없는 경우
+      return res.status(400).json({ message: "변경된 필드가 없습니다." });
+    }
+    // 데이터베이스에서 사용자 정보 업데이트
+    const updateSql = "UPDATE user SET ? WHERE USER_ID = ?";
+    con.query(updateSql, [updateFields, username], (err, result) => {
+      if (err) {
+        console.error("Failed to update user info:", err);
+        res.status(500).json({ message: "Failed to update user info" });
+      } else {
+        console.log("User info updated successfully");
+        res.status(200).json({ message: "User info updated successfully" });
+      }
+    });
+  } else {
+    res.status(401).json({ message: "Not logged in" });
+  }
+});
+
+// 탈퇴 요청 처리
+app.delete("/deleteAccount", (req, res) => {
+  if (req.session.username) {
+    const username = req.session.username; // 세션에서 사용자 이름 가져오기
+
+    // 데이터베이스에서 사용자 삭제
+    const deleteSql = "DELETE FROM user WHERE USER_ID = ?";
+    con.query(deleteSql, [username], (err, result) => {
+      if (err) {
+        console.error("Failed to delete user:", err);
+        res.status(500).json({ message: "Failed to delete user" });
+      } else {
+        console.log("User deleted successfully");
+        req.session.destroy(); // 세션 파기
+        res.status(200).json({ message: "User deleted successfully" });
+      }
+    });
+  } else {
+    res.status(401).json({ message: "Not logged in" });
+  }
+});
+
+//전시
 // API로부터 모든 전시회 정보를 가져와 클라이언트에게 제공
 app.get("/AllExhibitions", (req, res) => {
   const sql = "SELECT * FROM exhibition"; // exhibition 테이블에서 모든 정보를 가져오는 SQL 쿼리

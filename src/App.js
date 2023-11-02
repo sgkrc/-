@@ -16,6 +16,7 @@ import FindPW from "./pages/FindPW";
 import ChangePW from "./pages/ChangePW";
 import AdminPage from "./pages/AdminPage";
 import Exhibitondetail from "./pages/Exhibitondetail"; //각 전시회의 정보가 있는 곳
+import Goodbye from "./pages/Goodbye";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
         <Route path="/ChangePW" element={<ChangePW />} />
         <Route path="/AdminPage" element={<AdminPage />} />
         <Route path="/Exhibitondetail" element={<Exhibitondetail />} />
+        <Route path="/Goodbye" element={<Goodbye />} />
       </Routes>
       <footer>
         <div>Copyright @artroot</div>

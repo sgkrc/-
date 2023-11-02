@@ -2,14 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ExhibitionItem from "../ExhibitionItem";
 import ListGroup from "react-bootstrap/ListGroup";
-const sample = {
-  title: "전시회 명",
-  place: "서울시립미술관",
-  artist: "아티스트",
-  art_cnt: "전시회 작품 수",
-  informaion:
-    "open api 정보를 호출해서 적용하기. 형식은 xml이다. 꼭 주의!!!!!!!!!",
-};
 const ExhibitonList = () => {
   const [data, setData] = useState([]);
   // const serviceKey = "636f716649676b733637714f775a68"; // 서비스 키

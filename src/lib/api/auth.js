@@ -25,7 +25,7 @@ export const check = (username) =>
   );
 */
 // 회원가입 상태 확인
-export const register_check = () => client.get("/SignUpComplete");
+//export const register_check = () => client.get("/SignUpComplete");
 
 // 로그아웃
 export const logout = () => client.post("/Logout");
@@ -37,3 +37,14 @@ export const findID = ({ name, email }) =>
 //비밀번호 찾기
 export const findPW = ({ username, email }) =>
   client.post("/FindPW", { username, email });
+
+//마이페이지 정보 조회
+export const mypage = () => client.get("/mypage");
+
+//정보 수정
+export const updateMy = ({ name, email, newPassword }) =>
+  client.post("/updateMy", { name, email, newPassword });
+
+//회원 탈퇴
+export const deleteAccount = ({ username }) =>
+  client.delete("/deleteAccount", { username });

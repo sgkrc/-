@@ -21,10 +21,10 @@ export const register_check = createAction(REGISTER_CHECK);
 export const logout = createAction(LOGOUT);
 
 const checkSaga = createRequestSaga(CHECK, authAPI.check);
-const regsitercheckSaga = createRequestSaga(
-  REGISTER_CHECK,
-  authAPI.register_check
-);
+// const regsitercheckSaga = createRequestSaga(
+//   REGISTER_CHECK,
+//   authAPI.register_check
+// );
 
 function checkFailureSaga() {
   try {
@@ -33,13 +33,13 @@ function checkFailureSaga() {
     console.log("localStorage is not working");
   }
 }
-function registercheckFailureSaga() {
-  try {
-    localStorage.removeItem("user"); // localStorage 에서 user 제거하고
-  } catch (e) {
-    console.log("localStorage is not working");
-  }
-}
+// function registercheckFailureSaga() {
+//   try {
+//     localStorage.removeItem("user"); // localStorage 에서 user 제거하고
+//   } catch (e) {
+//     console.log("localStorage is not working");
+//   }
+// }
 
 function* logoutSaga() {
   try {
@@ -53,7 +53,7 @@ export function* userSaga() {
   yield takeLatest(CHECK, checkSaga);
   yield takeLatest(CHECK_FAILURE, checkFailureSaga);
   yield takeLatest(LOGOUT, logoutSaga);
-  yield takeLatest(REGISTER_CHECK_FAILURE, registercheckFailureSaga);
+  //yield takeLatest(REGISTER_CHECK_FAILURE, registercheckFailureSaga);
 }
 
 const initialState = {
@@ -77,16 +77,16 @@ export default handleActions(
       user: null,
       checkError: error,
     }),
-    [REGISTER_CHECK_SUCCESS]: (state, { payload: user }) => ({
-      ...state,
-      user,
-      checkError: null,
-    }),
-    [REGISTER_CHECK_FAILURE]: (state, { payload: error }) => ({
-      ...state,
-      user: null,
-      checkError: error,
-    }),
+    // [REGISTER_CHECK_SUCCESS]: (state, { payload: user }) => ({
+    //   ...state,
+    //   user,
+    //   checkError: null,
+    // }),
+    // [REGISTER_CHECK_FAILURE]: (state, { payload: error }) => ({
+    //   ...state,
+    //   user: null,
+    //   checkError: error,
+    // }),
     [LOGOUT]: (state) => ({
       ...state,
       user: null,
