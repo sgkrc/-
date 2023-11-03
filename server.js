@@ -12,11 +12,19 @@ const PORT = 60008;
 // MySQL 연결 설정
 const con = mysql.createConnection({
   host: "localhost", // DB서버 IP주소
+  user: "root", // DB접속 아이디
+  password: "1111", // DB암호
+  database: "db23208", //사용할 DB명
+});
+/*  학교 서버
+const con = mysql.createConnection({
+  host: "localhost", // DB서버 IP주소
   port: 3306, // DB서버 Port주소
   user: "dbid232", // DB접속 아이디
   password: "dbpass232", // DB암호
   database: "db23208", //사용할 DB명
 });
+*/
 
 //세션
 app.use(
@@ -112,38 +120,47 @@ app.post("/LogIn", (req, res) => {
 
   // 데이터베이스에서 사용자 정보 조회
   const sql = "SELECT * FROM user WHERE user_id = ?";
-  con.query(sql, [user_id], (err, results) => {
-    if (err) {
-      console.log("에러 발생");
-      return res.status(500).json({ error: "로그인 실패 : 에러 발생", err });
-    }
+  if (user_id === "admin" && user_pw === "admin") {
+    req.session.username = user_id;
+    res.status(200).json({
+      message: "관리자로 로그인 성공",
+    });
+  } else {
+    con.query(sql, [user_id], (err, results) => {
+      if (err) {
+        console.log("에러 발생");
+        return res.status(500).json({ error: "로그인 실패 : 에러 발생", err });
+      }
 
-    // 사용자 정보가 조회되지 않으면 로그인 실패
-    if (results.length === 0) {
-      console.log("사용자 정보가 없음");
-      return res.status(401).json({ error: "로그인 실패 : 사용자 정보 조회X" });
-    }
+      // 사용자 정보가 조회되지 않으면 로그인 실패
+      if (results.length === 0) {
+        console.log("사용자 정보가 없음");
+        return res
+          .status(401)
+          .json({ error: "로그인 실패 : 사용자 정보 조회X" });
+      }
 
-    const user = results[0];
+      const user = results[0];
 
-    // 비밀번호 비교
-    if (user.user_pw === user_pw) {
-      // 로그인 성공
-      console.log("로그인 성공");
-      req.session.username = user.user_id;
-      console.log(req.session.username);
-      console.log(user); // 유저 아이디를 콘솔에 출력
-      res.status(200).json({
-        user: user,
-      }); //사용자 정보를 응답에 포함
-    } else {
-      // 로그인 실패
-      console.log("로그인 실패");
-      console.log(user_id);
-      console.log("비밀번호 오류");
-      console.log(user);
-    }
-  });
+      // 비밀번호 비교
+      if (user.user_pw === user_pw) {
+        // 로그인 성공
+        console.log("로그인 성공");
+        req.session.username = user.user_id;
+        console.log(req.session.username);
+        console.log(user); // 유저 아이디를 콘솔에 출력
+        res.status(200).json({
+          user: user,
+        }); //사용자 정보를 응답에 포함
+      } else {
+        // 로그인 실패
+        console.log("로그인 실패");
+        console.log(user_id);
+        console.log("비밀번호 오류");
+        console.log(user);
+      }
+    });
+  }
 });
 
 // POST - 회원가입 요청 처리
@@ -157,29 +174,40 @@ app.post("/Register", (req, res) => {
   if (!user_id || !user_pw || !user_name || !user_mail) {
     return res.status(400).json({ error: "모든 필드를 입력해야 합니다." });
   }
+  const usercheck = "SELECT * FROM user WHERE user_id = ?";
+  con.query(usercheck, [user_id], function (err, result) {
+    if (err) {
+      console.log("회원가입 실패 유저id 체크 실패");
+      console.log(err);
+      return res.status(500).json({ error: "회원가입 실패" });
+    } else if (result.length !== 0) {
+      console.log("회원가입 실패 이미 있는 유저");
+      return res.status(500).json({ error: "이미 있는 유저" });
+    } else {
+      const sql =
+        "INSERT INTO user (user_id, user_pw, user_name, user_mail) VALUES (?, ?, ?, ?)";
 
-  const sql =
-    "INSERT INTO user (user_id, user_pw, user_name, user_mail) VALUES (?, ?, ?, ?)";
-
-  con.query(
-    sql,
-    [user_id, user_pw, user_name, user_mail],
-    function (err, result) {
-      if (err) {
-        console.log("회원가입 실패");
-        console.log(err);
-        return res.status(500).json({ error: "회원가입 실패" });
-      } else {
-        const user = {
-          user_id: user_id,
-          user_name: user_name,
-          user_mail: user_mail,
-        };
-        console.log("회원가입 성공");
-        res.status(200).json({ user: user });
-      }
+      con.query(
+        sql,
+        [user_id, user_pw, user_name, user_mail],
+        function (err, result) {
+          if (err) {
+            console.log("회원가입 실패");
+            console.log(err);
+            return res.status(500).json({ error: "회원가입 실패" });
+          } else {
+            const user = {
+              user_id: user_id,
+              user_name: user_name,
+              user_mail: user_mail,
+            };
+            console.log("회원가입 성공");
+            res.status(200).json({ user: user });
+          }
+        }
+      );
     }
-  );
+  });
 });
 
 // 로그아웃
@@ -212,34 +240,6 @@ app.get("/welcome", (req, res) => {
     // 세션에 사용자 이름이 없으면 로그인되지 않은 상태
     res.status(401).json({ error: "로그인되지 않음" });
   }
-  /*
-  const user_id = req.query.username; //쿼리라 {username : id} 이런 형태
-  const username = user_id.username; // id값만 추출
-  console.log(req.session);
-  // 여기에서 사용자 상태 확인 또는 필요한 데이터를 응답할 수 있습니다.
-  const check = "SELECT * FROM user WHERE user_id = ?";
-  con.query(check, [username], (err, results) => {
-    if (err) {
-      console.error("Error in database query:", err);
-      res.status(500).json({ message: "데이터베이스 오류" });
-    } else {
-      if (results.length > 0) {
-        // 사용자 정보를 찾았을 때
-        const user = results[0];
-        res.json({
-          message: "환영합니다",
-          username: user.USER_ID,
-          password: user.USER_PW,
-          name: user.USER_NAME,
-          user_mail: user.USER_MAIL,
-        });
-      } else {
-        // 사용자 정보를 찾지 못했을 때
-        console.log("사용자 정보를 못 찾음");
-        res.status(404).json({ message: "사용자를 찾을 수 없습니다" });
-      }
-    }
-  });*/
 });
 
 // 회원가입 완료
@@ -455,6 +455,26 @@ app.get("/ExhibitionSearchList", (req, res) => {
     // console.log(results);
   });
 });
+
+// 관리자 유저
+// API로부터 모든 유저 정보를 가져와 클라이언트에게 제공
+app.get("/admin/users", (req, res) => {
+  const sql = "SELECT * FROM user"; // user 테이블에서 모든 정보를 가져오는 SQL 쿼리
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.log("에러 발생");
+      console.log(err);
+      return res.status(500).json({
+        error: "데이터베이스에서 유저 정보를 가져오는 중 에러가 발생했습니다",
+      });
+    }
+
+    // 결과를 클라이언트에게 응답
+    res.status(200).json(results);
+    console.log(results);
+  });
+});
+
 // 서버 시작
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);

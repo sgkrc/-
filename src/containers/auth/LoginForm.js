@@ -59,11 +59,17 @@ const LoginForm = ({ history }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      navigate("/Welcome");
-      try {
-        localStorage.setItem("user", JSON.stringify(user));
-      } catch (e) {
-        console.log("localStorage is not working");
+      // 로그인 성공 시 사용자 역할에 따라 페이지 이동
+      if (user.username === "admin") {
+        console.log("관리자");
+        navigate("/AdminPage");
+      } else {
+        navigate("/Welcome");
+        try {
+          localStorage.setItem("user", JSON.stringify(user));
+        } catch (e) {
+          console.log("localStorage is not working");
+        }
       }
     }
   }, [history, user]);

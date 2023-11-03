@@ -8,9 +8,7 @@ const ExhibitionList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://ceprj.gachon.ac.kr:60008/AllExhibitions"
-        ); // 데이터베이스에서 전시회 정보를 가져오는 엔드포인트로 변경해야 합니다.
+        const response = await axios.get("/AllExhibitions"); // 데이터베이스에서 전시회 정보를 가져오는 엔드포인트로 변경해야 합니다.
 
         setData(response.data);
       } catch (e) {

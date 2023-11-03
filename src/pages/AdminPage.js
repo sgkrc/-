@@ -1,102 +1,43 @@
-import React from "react";
-import { Nav, Table } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Adminuseritem from "./Adminuseritem";
 
-const ex1 = [
-  {
-    username: "한승희",
-    name: "han",
-    email: "aa@aa",
-    password: "1212",
-  },
-  {
-    username: "김민수",
-    name: "kim",
-    email: "bb@bb",
-    password: "1234",
-  },
-  {
-    username: "신재훈",
-    name: "sin",
-    email: "22@11",
-    password: "1111",
-  },
-];
-
-const ex2 = [
-  {
-    title: "한승희",
-    art: "han",
-    explain: "aa@aa",
-    date: "1212",
-  },
-  {
-    title: "김민수",
-    art: "kim",
-    explain: "bb@bb",
-    date: "1234",
-  },
-  {
-    title: "신재훈",
-    art: "sin",
-    explain: "22@11",
-    date: "1111",
-  },
-];
 const AdminPage = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/admin/users"); // 데이터베이스에서 전시회 정보를 가져오는 엔드포인트로 변경해야 합니다.
+
+        setData(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
-    <div>
-      <h1>관리자 페이지</h1>
-      <Nav
-        variant="tabs"
-        defaultActiveKey="/home"
-        className="flex-column"
-        style={{ width: "200px", height: "400px" }}
-      >
-        <Nav.Item>
-          <Nav.Link
-            href="/"
-            style={{ marginBottom: "20px", marginTop: "20px", padding: "20px" }}
-          >
-            유저관리
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            href="/"
-            style={{ marginBottom: "20px", marginTop: "20px", padding: "20px" }}
-          >
-            전시회 관리
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            href="/"
-            style={{ marginBottom: "20px", marginTop: "20px", padding: "20px" }}
-          >
-            취향 추천 관리
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
-      <div>
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              {Object.keys(ex1[0]).map((key, index) => (
-                <th key={index}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {ex1.map((item, index) => (
-              <tr key={index}>
-                {Object.values(item).map((value, subIndex) => (
-                  <td key={subIndex}>{value}</td>
-                ))}
-              </tr>
+    <div className="home-container">
+      <h1>관리자 - 유저 목록</h1>
+      {data.length > 0 ? (
+        <div>
+          <ul>
+            {data.map((user, index) => (
+              <li key={index}>
+                <Adminuseritem
+                  user_id={user.user_id}
+                  user_name={user.user_name}
+                  user_mail={user.user_mail}
+                  user_pw={user.user_pw}
+                />
+              </li>
             ))}
-          </tbody>
-        </Table>
-      </div>
+          </ul>
+        </div>
+      ) : (
+        <p>데이터를 불러오는 중입니다...</p>
+      )}
     </div>
   );
 };
