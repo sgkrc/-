@@ -212,34 +212,23 @@ app.get("/welcome", (req, res) => {
     // 세션에 사용자 이름이 없으면 로그인되지 않은 상태
     res.status(401).json({ error: "로그인되지 않음" });
   }
-  /*
-  const user_id = req.query.username; //쿼리라 {username : id} 이런 형태
-  const username = user_id.username; // id값만 추출
-  console.log(req.session);
-  // 여기에서 사용자 상태 확인 또는 필요한 데이터를 응답할 수 있습니다.
-  const check = "SELECT * FROM user WHERE user_id = ?";
-  con.query(check, [username], (err, results) => {
-    if (err) {
-      console.error("Error in database query:", err);
-      res.status(500).json({ message: "데이터베이스 오류" });
-    } else {
-      if (results.length > 0) {
-        // 사용자 정보를 찾았을 때
-        const user = results[0];
-        res.json({
-          message: "환영합니다",
-          username: user.USER_ID,
-          password: user.USER_PW,
-          name: user.USER_NAME,
-          user_mail: user.USER_MAIL,
-        });
-      } else {
-        // 사용자 정보를 찾지 못했을 때
-        console.log("사용자 정보를 못 찾음");
-        res.status(404).json({ message: "사용자를 찾을 수 없습니다" });
-      }
-    }
-  });*/
+});
+
+// check api 관리자 로그인 완료
+app.get("/AdminPage", (req, res) => {
+  // 예전
+  if (req.session.username) {
+    // 세션에 사용자 이름이 존재하면 로그인된 상태
+    const user = {
+      username: req.session.username, // 현재 로그인한 사용자의 이름 또는 아이디
+      // 여기에서 다른 사용자 정보를 필요에 따라 세션에서 읽어올 수 있습니다.
+    };
+    res.status(200).json(user);
+    console.log("유저 정보");
+  } else {
+    // 세션에 사용자 이름이 없으면 로그인되지 않은 상태
+    res.status(401).json({ error: "로그인되지 않음" });
+  }
 });
 
 // 회원가입 완료

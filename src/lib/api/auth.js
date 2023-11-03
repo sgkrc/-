@@ -11,6 +11,7 @@ export const register = ({ username, password, name, email }) =>
 
 // 로그인 상태 확인
 export const check = () => client.get("/Welcome");
+
 /*
 export const check = (username) =>
   client.get(
