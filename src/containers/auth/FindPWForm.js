@@ -56,7 +56,7 @@ const FindPWForm = ({ history }) => {
     }
   }, [auth, authError, dispatch]);
   const navigate = useNavigate();
-  //id 를 보여주는 화면 만들기
+  //pw 를 보여주는 화면 만들기
   useEffect(() => {
     if (user) {
       navigate("/Welcome");

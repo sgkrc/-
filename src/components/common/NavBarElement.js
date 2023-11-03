@@ -18,6 +18,7 @@ const UserInfo = styled.div`
 `;
 
 const NavBarElement = ({ user, onLogout }) => {
+<<<<<<< HEAD
   const navigate = useNavigate();
   const handleLogout = () => {
     onLogout();
@@ -38,6 +39,16 @@ const NavBarElement = ({ user, onLogout }) => {
       localStorage.setItem("searchTerm", searchTerm);
       navigate(`/ExhibitionSearchList`);
     }
+=======
+  const navigate = useNavigate(); // useNavigate 훅을 통해 페이지 이동 함수를 가져옵니다.
+
+  const handleLogout = () => {
+    // 로그아웃 버튼 클릭 시 실행되는 함수
+    onLogout(); // 로그아웃 동작
+    localStorage.removeItem('user');
+    // 페이지를 리디렉션
+    navigate("/"); // 로그아웃 후 홈 페이지로 이동
+>>>>>>> ca4d79aed6f987ec1ea09a9f07e554afe7275bed
   };
 
   return (
@@ -71,9 +82,13 @@ const NavBarElement = ({ user, onLogout }) => {
           {user ? (
             <div className="right d-flex align-items-center">
               <UserInfo>{user.username}</UserInfo>
+<<<<<<< HEAD
               <Button onClick={handleLogout} className="btn btn-lg">
                 로그아웃
               </Button>
+=======
+              <Button onClick={handleLogout}>로그아웃</Button>
+>>>>>>> ca4d79aed6f987ec1ea09a9f07e554afe7275bed
             </div>
           ) : (
             <div className="right d-flex align-items-center">
