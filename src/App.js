@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ExhibitonList from "./pages/ExhibitonList";
+import ExhibitionList from "./pages/ExhibitionList";
 import MyPage from "./pages/MyPage";
 import Recommend from "./pages/Recommend";
 import Register from "./pages/Register";
@@ -17,6 +17,7 @@ import ChangePW from "./pages/ChangePW";
 import AdminPage from "./pages/AdminPage";
 import Exhibitiondetail from "./pages/Exhibitiondetail"; //각 전시회의 정보가 있는 곳
 import Goodbye from "./pages/Goodbye";
+import ExhibitionSearchList from "./pages/ExhibitionSearchList";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -40,7 +41,7 @@ function App() {
           }
         />
         <Route path="/Register" element={<Register />} />
-        <Route path="/ExhibitonList" element={<ExhibitonList />} />
+        <Route path="/ExhibitionList" element={<ExhibitionList />} />
         <Route path="/MyPage" element={<MyPage />} />
         <Route path="/Recommend" element={<Recommend />} />
         <Route path="/Rating" element={<Rating />} />
@@ -57,6 +58,10 @@ function App() {
         <Route path="/AdminPage" element={<AdminPage />} />
         <Route path="/Exhibitiondetail/:id" element={<Exhibitiondetail />} />
         <Route path="/Goodbye" element={<Goodbye />} />
+        <Route
+          path="/ExhibitionSearchList"
+          element={<ExhibitionSearchList />}
+        />
       </Routes>
       <footer>
         <div>Copyright @artroot</div>

@@ -7,14 +7,15 @@ const cors = require("cors");
 const mysql2 = require("mysql2/promise"); // 추가
 const axios = require("axios"); // 추가
 const xml2js = require("xml2js"); // 추가
-const PORT = 4000;
+const PORT = 60008;
 
 // MySQL 연결 설정
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "1111",
-  database: "db23208",
+  host: "localhost", // DB서버 IP주소
+  port: 3306, // DB서버 Port주소
+  user: "dbid232", // DB접속 아이디
+  password: "dbpass232", // DB암호
+  database: "db23208", //사용할 DB명
 });
 
 //세션
@@ -37,8 +38,9 @@ const API_URL =
   "http://openapi.seoul.go.kr:8088/764a66547061726d3338484c595154/json/ListExhibitionOfSeoulMOAInfo/1/3/";
 const DATABASE_CONFIG = {
   host: "localhost",
-  user: "root",
-  password: "1111",
+  user: "dbid232",
+  port: 3306, // DB서버 Port주소
+  password: "dbpass232",
   database: "db23208",
   charset: "utf8", // 또는 'utf8mb4'
 };
@@ -99,6 +101,7 @@ async function fetchAndStoreData() {
 }
 // 서버 시작 시 데이터 초기화
 fetchAndStoreData();
+// 여기까지 주석처리
 */
 app.get("/", (req, res) => res.send("Hello world!!!"));
 
@@ -124,10 +127,10 @@ app.post("/LogIn", (req, res) => {
     const user = results[0];
 
     // 비밀번호 비교
-    if (user.USER_PW === user_pw) {
+    if (user.user_pw === user_pw) {
       // 로그인 성공
       console.log("로그인 성공");
-      req.session.username = user.USER_ID;
+      req.session.username = user.user_id;
       console.log(req.session.username);
       console.log(user); // 유저 아이디를 콘솔에 출력
       res.status(200).json({
@@ -306,7 +309,7 @@ app.get("/mypage", (req, res) => {
   if (req.session.username) {
     const username = req.session.username; // 세션에서 사용자 이름 가져오기
     // 데이터베이스에서 사용자 정보 조회
-    const sql = "SELECT * FROM user WHERE USER_ID = ?";
+    const sql = "SELECT * FROM user WHERE user_id = ?";
     con.query(sql, [username], (err, results) => {
       if (err) {
         console.log("에러 발생");
@@ -323,9 +326,9 @@ app.get("/mypage", (req, res) => {
       console.log(user);
       // 여기에서 필요한 사용자 정보를 클라이언트에게 응답할 수 있습니다.
       const mypage = {
-        username: user.USER_ID,
-        name: user.USER_NAME,
-        email: user.USER_MAIL,
+        username: user.user_id,
+        name: user.user_name,
+        email: user.user_mail,
         // 기타 사용자 정보 추가
       };
       res.status(200).json(mypage); // 사용자 정보 응답
@@ -344,13 +347,13 @@ app.post("/updateMy", (req, res) => {
 
     // 클라이언트에서 전송한 변경된 필드가 있는지 확인하고 객체에 추가
     if (req.body.name) {
-      updateFields.USER_NAME = req.body.name;
+      updateFields.user_name = req.body.name;
     }
     if (req.body.email) {
-      updateFields.USER_MAIL = req.body.email;
+      updateFields.user_mail = req.body.email;
     }
     if (req.body.newPassword) {
-      updateFields.USER_PW = req.body.newPassword;
+      updateFields.user_pw = req.body.newPassword;
     }
 
     if (Object.keys(updateFields).length === 0) {
@@ -358,7 +361,7 @@ app.post("/updateMy", (req, res) => {
       return res.status(400).json({ message: "변경된 필드가 없습니다." });
     }
     // 데이터베이스에서 사용자 정보 업데이트
-    const updateSql = "UPDATE user SET ? WHERE USER_ID = ?";
+    const updateSql = "UPDATE user SET ? WHERE user_id = ?";
     con.query(updateSql, [updateFields, username], (err, result) => {
       if (err) {
         console.error("Failed to update user info:", err);
@@ -379,7 +382,7 @@ app.delete("/deleteAccount", (req, res) => {
     const username = req.session.username; // 세션에서 사용자 이름 가져오기
 
     // 데이터베이스에서 사용자 삭제
-    const deleteSql = "DELETE FROM user WHERE USER_ID = ?";
+    const deleteSql = "DELETE FROM user WHERE user_id = ?";
     con.query(deleteSql, [username], (err, result) => {
       if (err) {
         console.error("Failed to delete user:", err);
@@ -438,7 +441,20 @@ app.get("/Exhibitiondetail/:id", (req, res) => {
     res.status(200).json(results[0]);
   });
 });
-
+// 전시회 조회 엔드포인트
+app.get("/ExhibitionSearchList", (req, res) => {
+  const searchTerm = req.query.query;
+  console.log("검색어(server):", searchTerm); // 검색어 출력
+  const sql = `SELECT ART_PICTURE, ART_NAME, ART_ARTIST, ART_PRICE, ART_PLACE, ART_START, ART_END FROM exhibition WHERE ART_NAME LIKE '%${searchTerm}%'`;
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json({ results });
+    // console.log(results);
+  });
+});
 // 서버 시작
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);

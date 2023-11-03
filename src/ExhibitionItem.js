@@ -31,7 +31,7 @@ const ExhibitonBlock = styled.div`
     margin-top: 3rem;
   }
 `;
-const ExhibitonItem = (props) => {
+const ExhibitionItem = (props) => {
   const {
     ART_NUM,
     ART_NAME,
@@ -77,4 +77,4 @@ const ExhibitonItem = (props) => {
     </ExhibitonBlock>
   );
 };
-export default ExhibitonItem;
+export default ExhibitionItem;
