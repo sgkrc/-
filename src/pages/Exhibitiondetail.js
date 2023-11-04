@@ -45,7 +45,9 @@ const Exhibitiondetail = () => {
               <p className="summary">
                 {exhibitionData.summary}
                 <span className="ev">
-                  <Button href="/Rating">평가하기</Button>
+                  <Button href={`/Rating/${exhibitionData.ART_NUM}`}>
+                    평가하기
+                  </Button>
                 </span>
               </p>
             </div>

@@ -470,6 +470,72 @@ app.get("/ExhibitionSearchList", (req, res) => {
   });
 });
 
+// 전시회 평가 기능
+// 별점 & 한줄평 id 별로
+app.get("/Rating/:id", (req, res) => {
+  const art_num = req.params.id; // Retrieve the 'id' parameter from the URL
+  console.log(art_num);
+  const sql = "SELECT ART_PICTURE FROM exhibition where ART_NUM = ?";
+
+  con.query(sql, [art_num], (err, results) => {
+    if (err) {
+      console.log("에러 발생");
+      console.log(err);
+      return res.status(500).json({
+        error: "데이터베이스에서 전시회 정보를 가져오는 중 에러가 발생했습니다",
+      });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({
+        error: "해당 ID로 전시회 정보를 찾을 수 없습니다",
+      });
+    }
+    // Respond with the first result (assuming only one result is expected)
+    console.log(results[0] + "hi");
+    res.status(200).json(results[0]);
+  });
+});
+// 별점 평가한거 받는 것
+// rating user,comment, start, exhiitionID post하기
+app.post("/submitRating", (req, res) => {
+  const { user, comment, star, exhibitionId } = req.body; // Assuming you pass user information, comment, stars, and exhibition ID from the frontend
+
+  // Insert the data into your "one" database table using an SQL query
+  const sql =
+    "INSERT INTO one (ONE_USER, ONE_COMMENT, ONE_STARS, ONE_PICTURE) VALUES (?, ?, ?, ?)";
+
+  // First, perform a SELECT query to get the 'image' field from the other table based on 'exhibitionId'
+  const selectSql = "SELECT ART_PICTURE FROM exhibition WHERE ART_NUM = ?"; // Replace 'other_table' with the actual table name
+  con.query(selectSql, [exhibitionId], (selectErr, selectResult) => {
+    if (selectErr) {
+      console.error("Error retrieving data from 'exhibition':", selectErr);
+      return res.status(500).json({
+        error: "exhibition에서 art picture 값 불러오기 실패",
+      });
+    }
+
+    const ONE_PICTURE = selectResult[0].ART_PICTURE; // Assuming 'selectResult' contains only one row
+
+    // Now, you can use the retrieved 'image' value in your INSERT statement
+    con.query(
+      sql,
+      [user, comment, star, ONE_PICTURE],
+      (insertErr, insertResult) => {
+        if (insertErr) {
+          console.error("Error inserting data into 'one' table:", insertErr);
+          return res.status(500).json({
+            error: "Error inserting data into the database",
+          });
+        }
+
+        // Data successfully inserted into the 'one' table
+        console.log("Rating submitted successfully.");
+        res.status(200).json({ message: "Rating submitted successfully" });
+      }
+    );
+  });
+});
+
 // 관리자 유저
 // API로부터 모든 유저 정보를 가져와 클라이언트에게 제공
 app.get("/admin/users", (req, res) => {

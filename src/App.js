@@ -44,7 +44,7 @@ function App() {
         <Route path="/ExhibitionList" element={<ExhibitionList />} />
         <Route path="/MyPage" element={<MyPage />} />
         <Route path="/Recommend" element={<Recommend />} />
-        <Route path="/Rating" element={<Rating />} />
+        <Route path="/Rating/:id" element={<Rating />} />
         <Route path="/SignUpComplete" element={<SignUpComplete />} />
         <Route
           path="/Welcome"
