@@ -121,9 +121,24 @@ app.post("/LogIn", (req, res) => {
   // 데이터베이스에서 사용자 정보 조회
   const sql = "SELECT * FROM user WHERE user_id = ?";
   if (user_id === "admin" && user_pw === "admin") {
-    req.session.username = user_id;
-    res.status(200).json({
-      message: "관리자로 로그인 성공",
+    con.query(sql, [user_id], (err, results) => {
+      const user = results[0];
+      // 비밀번호 비교
+      if (user.user_pw === user_pw) {
+        // 로그인 성공
+        console.log("로그인 성공");
+        req.session.username = user.user_id;
+        console.log(req.session.username);
+        res.status(200).json({
+          user: user,
+        }); //사용자 정보를 응답에 포함
+      } else {
+        // 로그인 실패
+        console.log("로그인 실패");
+        console.log(user_id);
+        console.log("비밀번호 오류");
+        console.log(user);
+      }
     });
   } else {
     con.query(sql, [user_id], (err, results) => {
@@ -235,7 +250,6 @@ app.get("/welcome", (req, res) => {
       // 여기에서 다른 사용자 정보를 필요에 따라 세션에서 읽어올 수 있습니다.
     };
     res.status(200).json(user);
-    console.log("유저 정보");
   } else {
     // 세션에 사용자 이름이 없으면 로그인되지 않은 상태
     res.status(401).json({ error: "로그인되지 않음" });
@@ -471,10 +485,67 @@ app.get("/admin/users", (req, res) => {
 
     // 결과를 클라이언트에게 응답
     res.status(200).json(results);
-    console.log(results);
   });
 });
 
+// 유저 정보 수정
+
+//사용자 정보 수정
+app.post("/admin/update", (req, res) => {
+  if (req.session.username) {
+    const username = req.body.username; // 받은 정보에서 유저 이름 가져오기
+    const updateFields = {}; // 변경할 필드를 저장할 빈 객체 생성
+
+    // 클라이언트에서 전송한 변경된 필드가 있는지 확인하고 객체에 추가
+    if (req.body.name) {
+      updateFields.user_name = req.body.name;
+    }
+    if (req.body.email) {
+      updateFields.user_mail = req.body.email;
+    }
+    if (req.body.newPassword) {
+      updateFields.user_pw = req.body.newPassword;
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      // 변경된 필드가 없는 경우
+      return res.status(400).json({ message: "변경된 필드가 없습니다." });
+    }
+    // 데이터베이스에서 사용자 정보 업데이트
+    const updateSql = "UPDATE user SET ? WHERE user_id = ?";
+    con.query(updateSql, [updateFields, username], (err, result) => {
+      if (err) {
+        console.error("Failed to update user info:", err);
+        res.status(500).json({ message: "Failed to update user info" });
+      } else {
+        console.log("User info updated successfully");
+        res.status(200).json({ message: "User info updated successfully" });
+      }
+    });
+  } else {
+    res.status(401).json({ message: "Not logged in" });
+  }
+});
+
+// 탈퇴 요청 처리
+app.delete("/admin/deleteUser/:id", (req, res) => {
+  if (req.session.username) {
+    const username = req.params.id; // 세션에서 사용자 이름 가져오기
+    // 데이터베이스에서 사용자 삭제
+    const deleteSql = "DELETE FROM user WHERE user_id = ?";
+    con.query(deleteSql, [username], (err, result) => {
+      if (err) {
+        console.error("Failed to delete user:", err);
+        res.status(500).json({ message: "Failed to delete user" });
+      } else {
+        console.log("User deleted successfully");
+        res.status(200).json({ message: "User deleted successfully" });
+      }
+    });
+  } else {
+    res.status(401).json({ message: "Not logged in" });
+  }
+});
 // 서버 시작
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);

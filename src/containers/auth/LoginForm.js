@@ -63,6 +63,11 @@ const LoginForm = ({ history }) => {
       if (user.username === "admin") {
         console.log("관리자");
         navigate("/AdminPage");
+        try {
+          localStorage.setItem("user", JSON.stringify(user));
+        } catch (e) {
+          console.log("localStorage is not working");
+        }
       } else {
         navigate("/Welcome");
         try {

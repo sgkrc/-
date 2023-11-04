@@ -14,7 +14,7 @@ import NavContainer from "./containers/common/NavContainer";
 import FindID from "./pages/FindID";
 import FindPW from "./pages/FindPW";
 import ChangePW from "./pages/ChangePW";
-import AdminPage from "./pages/AdminPage";
+import AdminPage from "./pages/admin/AdminPage";
 import Exhibitiondetail from "./pages/Exhibitiondetail"; //각 전시회의 정보가 있는 곳
 import Goodbye from "./pages/Goodbye";
 import ExhibitionSearchList from "./pages/ExhibitionSearchList";
