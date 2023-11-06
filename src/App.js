@@ -1,9 +1,9 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ExhibitionList from "./pages/ExhibitionList";
 import MyPage from "./pages/MyPage";
-import Recommend from "./pages/Recommend";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
@@ -23,6 +23,8 @@ import Exhibitiondetail from "./pages/Exhibitiondetail"; //각 전시회의 정�
 import Goodbye from "./pages/Goodbye";
 import ExhibitionSearchList from "./pages/ExhibitionSearchList";
 import RatingList from "./pages/RatingList";
+import RecommendedExhibition from "./pages/RecommendedExhibition";
+import Question from "./pages/Question";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -47,8 +49,11 @@ function App() {
         />
         <Route path="/Register" element={<Register />} />
         <Route path="/ExhibitionList" element={<ExhibitionList />} />
+        <Route
+          path="/RecommendedExhibition"
+          element={<RecommendedExhibition />}
+        />
         <Route path="/MyPage" element={<MyPage />} />
-        <Route path="/Recommend" element={<Recommend />} />
         <Route path="/Rating/:id" element={<Rating />} />
         <Route path="/RatingList" element={<RatingList />} />
         <Route path="/SignUpComplete" element={<SignUpComplete />} />
@@ -75,9 +80,15 @@ function App() {
           path="/ExhibitionSearchList"
           element={<ExhibitionSearchList />}
         />
+        <Route path="/Question" element={<Question />} />
       </Routes>
+
       <footer>
-        <div>Copyright @artroot</div>
+        <div>
+          Copyright @artroot
+          <br />
+          <Link to="/Question">문의사항</Link>
+        </div>
       </footer>
     </Router>
   );

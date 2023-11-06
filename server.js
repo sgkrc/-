@@ -478,6 +478,23 @@ app.get("/ExhibitionSearchList", (req, res) => {
   });
 });
 
+// 전시회 랜덤으로 불러오기 --> 나중에 꼭 추천 으로 변경
+app.get("/RandomExhibitions", (req, res) => {
+  const sql = "SELECT * FROM exhibition ORDER BY RAND() LIMIT 3"; // exhibition 테이블에서 랜덤으로 3개의 정보를 가져오는 SQL 쿼리
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.log("에러 발생");
+      console.log(err);
+      return res.status(500).json({
+        error: "데이터베이스에서 전시회 정보를 가져오는 중 에러가 발생했습니다",
+      });
+    }
+
+    // 결과를 클라이언트에게 응답
+    res.status(200).json(results);
+  });
+});
+
 // 전시회 평가 기능
 // 별점 & 한줄평 id 별로
 app.get("/Rating/:id", (req, res) => {

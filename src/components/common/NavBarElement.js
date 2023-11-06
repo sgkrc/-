@@ -105,7 +105,7 @@ const NavBarElement = ({ user, onLogout }) => {
               <NavDropdown.Item href="/ExhibitionList">
                 전시회 목록
               </NavDropdown.Item>
-              <NavDropdown.Item href="/ExhibitionDetail">
+              <NavDropdown.Item href="/RecommendedExhibition">
                 추천 전시회
               </NavDropdown.Item>
               <NavDropdown.Item href="/ExhibitionList">
@@ -127,6 +127,9 @@ const NavBarElement = ({ user, onLogout }) => {
             </Nav.Link>
             <Nav.Link href="/MyPage" style={{ marginRight: "50px" }}>
               마이페이지
+            </Nav.Link>
+            <Nav.Link href="/" style={{ marginRight: "50px" }}>
+              문의사항
             </Nav.Link>
             {user && user.username === "admin" ? (
               <Nav.Link href="/AdminMain" style={{ marginRight: "50px" }}>
