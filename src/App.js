@@ -15,6 +15,10 @@ import FindID from "./pages/FindID";
 import FindPW from "./pages/FindPW";
 import ChangePW from "./pages/ChangePW";
 import AdminPage from "./pages/admin/AdminPage";
+import AdminMain from "./pages/admin/AdminMain";
+import AdminExhibitionList from "./pages/admin/AdminExhibitionList";
+import ExhibitionAdd from "./pages/admin/ExhibitionAdd";
+import AdminExhibitiondetail from "./pages/admin/AdminExhibitiondetail";
 import Exhibitiondetail from "./pages/Exhibitiondetail"; //각 전시회의 정보가 있는 곳
 import Goodbye from "./pages/Goodbye";
 import ExhibitionSearchList from "./pages/ExhibitionSearchList";
@@ -56,6 +60,13 @@ function App() {
         <Route path="/FindPW" element={<FindPW />} />
         <Route path="/ChangePW" element={<ChangePW />} />
         <Route path="/AdminPage" element={<AdminPage />} />
+        <Route path="/AdminMain" element={<AdminMain />} />
+        <Route path="/AdminExhibitionList" element={<AdminExhibitionList />} />
+        <Route
+          path="/AdminExhibitiondetail/:id"
+          element={<AdminExhibitiondetail />}
+        />
+        <Route path="/ExhibitionAdd" element={<ExhibitionAdd />} />
         <Route path="/Exhibitiondetail/:id" element={<Exhibitiondetail />} />
         <Route path="/Goodbye" element={<Goodbye />} />
         <Route

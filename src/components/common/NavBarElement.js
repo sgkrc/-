@@ -128,6 +128,11 @@ const NavBarElement = ({ user, onLogout }) => {
             <Nav.Link href="/MyPage" style={{ marginRight: "50px" }}>
               마이페이지
             </Nav.Link>
+            {user && user.username === "admin" ? (
+              <Nav.Link href="/AdminMain" style={{ marginRight: "50px" }}>
+                관리자 페이지
+              </Nav.Link>
+            ) : null}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

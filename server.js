@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const path = require("path");
 const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
@@ -111,7 +112,13 @@ async function fetchAndStoreData() {
 fetchAndStoreData();
 // 여기까지 주석처리
 */
-app.get("/", (req, res) => res.send("Hello world!!!"));
+// app.use(express.static(path.join(__dirname, "/build")));
+// app.get("/", (req, res) =>
+//   res.sendFile(path.join(__dirname, "/build/index.html"))
+// );
+// app.get("*", (req, res) =>
+//   res.sendFile(path.join(__dirname, "/build/index.html"))
+// );
 
 //로그인
 app.post("/LogIn", (req, res) => {
@@ -250,6 +257,7 @@ app.get("/welcome", (req, res) => {
       // 여기에서 다른 사용자 정보를 필요에 따라 세션에서 읽어올 수 있습니다.
     };
     res.status(200).json(user);
+    console.log(user);
   } else {
     // 세션에 사용자 이름이 없으면 로그인되지 않은 상태
     res.status(401).json({ error: "로그인되지 않음" });
@@ -612,6 +620,84 @@ app.delete("/admin/deleteUser/:id", (req, res) => {
     res.status(401).json({ message: "Not logged in" });
   }
 });
+
+// 관리자 전시회 관리 기능
+// 전시회 조회
+app.get("/admin/exhibitions", (req, res) => {
+  const sql = "SELECT * FROM exhibition"; // exhibition 테이블에서 모든 정보를 가져오는 SQL 쿼리
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.log("에러 발생");
+      console.log(err);
+      return res.status(500).json({
+        error: "데이터베이스에서 전시회 정보를 가져오는 중 에러가 발생했습니다",
+      });
+    }
+    // 결과를 클라이언트에게 응답
+    res.status(200).json(results);
+    //console.log(results)
+  });
+});
+// 전시회 추가
+app.post("/admin/exhibitions", (req, res) => {
+  const newExhibition = req.body; // 클라이언트에서 전송된 전시회 정보
+
+  const sql = "INSERT INTO exhibition SET ?"; // 전시회 정보를 삽입하는 SQL 쿼리
+
+  con.query(sql, newExhibition, (err, results) => {
+    if (err) {
+      console.error("Failed to insert new exhibition:", err);
+      res.status(500).json({ message: "전시회 추가 실패" });
+    } else {
+      console.log("전시회 추가 성공");
+      res.status(201).json({ message: "전시회 추가 성공" });
+    }
+  });
+});
+// 전시회 정보 수정
+app.put("/admin/exhibitions/:id", (req, res) => {
+  const exhibitionId = req.params.id;
+  const updatedExhibition = req.body;
+  console.log(updatedExhibition);
+  function removeEmptyValues(obj) {
+    const result = {};
+    for (const key in obj) {
+      if (obj[key]) {
+        result[key] = obj[key];
+      }
+    }
+    return result;
+  }
+  const updatedData = removeEmptyValues(updatedExhibition);
+  const sql = "UPDATE exhibition SET ? WHERE ART_NUM = ?";
+  con.query(sql, [updatedData, exhibitionId], (err, results) => {
+    if (err) {
+      console.error("Failed to update:", err);
+      res.status(500).json({ message: "전시회 업데이트 실패" });
+    } else {
+      console.log("전시회 조회 수정 성공");
+      res.status(200).json({ message: "전시회 조회 수정 성공" });
+    }
+  });
+});
+
+// 전시회 삭제
+app.delete("/admin/exhibitions/:id", (req, res) => {
+  const exhibitionId = req.params.id; // URL에서 전시회 ID를 가져옴
+
+  const sql = "DELETE FROM exhibition WHERE ART_NUM = ?"; // 전시회 ID를 기반으로 삭제 쿼리 작성
+
+  con.query(sql, [exhibitionId], (err, results) => {
+    if (err) {
+      console.error("Failed to delete:", err);
+      res.status(500).json({ message: "전시회 삭제 실패" });
+    } else {
+      console.log("전시회 삭제 성공");
+      res.status(200).json({ message: "전시회 삭제 성공" });
+    }
+  });
+});
+
 // 서버 시작
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);

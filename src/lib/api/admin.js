@@ -8,3 +8,16 @@ export const update = ({ username, name, email, newPassword }) =>
 //회원 탈퇴
 export const deleteUser = (username) =>
   client.delete(`/admin/deleteUser/${username}`);
+
+//전시회 조회
+export const exhibitionInfo = client.get("/admin/exhibitions");
+
+//전시회 추가
+export const exhibitionAdd = (data) => client.post("/admin/exhibitions", data);
+
+// 전시회 수정
+export const exhibitionUpdate = (id, updatedData) =>
+  client.put(`/admin/exhibitions/${id}`, updatedData);
+
+//전시회 삭제
+export const exhibitionDel = (id) => client.delete(`/admin/exhibitions/${id}`);

@@ -62,7 +62,7 @@ const LoginForm = ({ history }) => {
       // 로그인 성공 시 사용자 역할에 따라 페이지 이동
       if (user.username === "admin") {
         console.log("관리자");
-        navigate("/AdminPage");
+        navigate("/AdminMain");
         try {
           localStorage.setItem("user", JSON.stringify(user));
         } catch (e) {
