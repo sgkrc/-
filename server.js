@@ -506,41 +506,80 @@ app.get("/Rating/:id", (req, res) => {
 // 별점 평가한거 받는 것
 // rating user,comment, start, exhiitionID post하기
 app.post("/submitRating", (req, res) => {
-  const { user, comment, star, exhibitionId } = req.body; // Assuming you pass user information, comment, stars, and exhibition ID from the frontend
+  const { user, comment, star, exhibitionId } = req.body;
 
-  // Insert the data into your "one" database table using an SQL query
-  const sql =
-    "INSERT INTO one (ONE_USER, ONE_COMMENT, ONE_STARS, ONE_PICTURE) VALUES (?, ?, ?, ?)";
-
-  // First, perform a SELECT query to get the 'image' field from the other table based on 'exhibitionId'
-  const selectSql = "SELECT ART_PICTURE FROM exhibition WHERE ART_NUM = ?"; // Replace 'other_table' with the actual table name
-  con.query(selectSql, [exhibitionId], (selectErr, selectResult) => {
-    if (selectErr) {
-      console.error("Error retrieving data from 'exhibition':", selectErr);
+  const checkSql = "SELECT * FROM one WHERE ONE_USER = ? AND ONE_ARTNUM = ?";
+  con.query(checkSql, [user, exhibitionId], (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error("Error checking for existing rating:", checkErr);
       return res.status(500).json({
-        error: "exhibition에서 art picture 값 불러오기 실패",
+        error: "평가 확인 중 오류 발생",
       });
     }
 
-    const ONE_PICTURE = selectResult[0].ART_PICTURE; // Assuming 'selectResult' contains only one row
+    if (checkResult.length > 0) {
+      // User has already rated this exhibition
+      return res.status(400).json({
+        message: "이미 평가를 제출했습니다.",
+      });
+    } else {
+      // Insert the data into your "one" database table using an SQL query
+      const insertSql =
+        "INSERT INTO one (ONE_USER, ONE_COMMENT, ONE_STARS, ONE_PICTURE, ONE_ARTNUM) VALUES (?, ?, ?, ?, ?)";
 
-    // Now, you can use the retrieved 'image' value in your INSERT statement
-    con.query(
-      sql,
-      [user, comment, star, ONE_PICTURE],
-      (insertErr, insertResult) => {
-        if (insertErr) {
-          console.error("Error inserting data into 'one' table:", insertErr);
+      // First, perform a SELECT query to get the 'image' field from the other table based on 'exhibitionId'
+      const selectSql = "SELECT ART_PICTURE FROM exhibition WHERE ART_NUM = ?";
+      con.query(selectSql, [exhibitionId], (selectErr, selectResult) => {
+        if (selectErr) {
+          console.error("Error retrieving data from 'exhibition':", selectErr);
           return res.status(500).json({
-            error: "Error inserting data into the database",
+            error: "exhibition에서 art picture 값 불러오기 실패",
           });
         }
 
-        // Data successfully inserted into the 'one' table
-        console.log("Rating submitted successfully.");
-        res.status(200).json({ message: "Rating submitted successfully" });
-      }
-    );
+        const ONE_PICTURE = selectResult[0].ART_PICTURE; // Assuming 'selectResult' contains only one row
+
+        // Now, you can use the retrieved 'image' value in your INSERT statement
+        con.query(
+          insertSql,
+          [user, comment, star, ONE_PICTURE, exhibitionId],
+          (insertErr, insertResult) => {
+            if (insertErr) {
+              console.error(
+                "Error inserting data into 'one' table:",
+                insertErr
+              );
+              return res.status(500).json({
+                error: "Error inserting data into the database",
+              });
+            }
+
+            // Data successfully inserted into the 'one' table
+            console.log("Rating submitted successfully.");
+            res.status(200).json({ message: "Rating submitted successfully" });
+          }
+        );
+      });
+    }
+  });
+});
+
+//전체 별점
+//별점 리스트 불러오기
+app.get("/AllRatings", (req, res) => {
+  const sql = "SELECT * FROM one"; // exhibition 테이블에서 모든 정보를 가져오는 SQL 쿼리
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.log("에러 발생");
+      console.log(err);
+      return res.status(500).json({
+        error: "데이터베이스에서 전시회 정보를 가져오는 중 에러가 발생했습니다",
+      });
+    }
+
+    // 결과를 클라이언트에게 응답
+    res.status(200).json(results);
+    //console.log(results)
   });
 });
 

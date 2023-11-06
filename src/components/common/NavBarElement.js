@@ -119,7 +119,7 @@ const NavBarElement = ({ user, onLogout }) => {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="/Rating" style={{ marginRight: "50px" }}>
+            <Nav.Link href="/RatingList" style={{ marginRight: "50px" }}>
               평가
             </Nav.Link>
             <Nav.Link href="#recommend" style={{ marginRight: "50px" }}>

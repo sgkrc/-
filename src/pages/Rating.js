@@ -49,13 +49,19 @@ const Rating = ({ totalStars = 5 }) => {
     axios
       .post(`/submitRating`, data)
       .then((response) => {
-        setShowModal(true); // 모달 표시
-        setComment("");
-        setStars(0); // 별점 초기화
-        setTimeout(() => {
-          setShowModal(false); // 2초 후 모달을 닫습니다.
-          navigate("/"); // 홈으로 이동
-        }, 2000);
+        if (response.data.message === "이미 평가를 제출했습니다.") {
+          // 이미 평가를 제출한 경우
+          alert("이미 평가를 제출했습니다.");
+        } else {
+          // 평가가 성공적으로 제출된 경우
+          setShowModal(true); // 모달 표시
+          setComment("");
+          setStars(0); // 별점 초기화
+          setTimeout(() => {
+            setShowModal(false); // 2초 후 모달을 닫습니다.
+            navigate("/"); // 홈으로 이동
+          }, 2000);
+        }
       })
       .catch((error) => {
         console.error("평가 제출 중 오류 발생:", error);

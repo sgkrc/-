@@ -22,6 +22,7 @@ import AdminExhibitiondetail from "./pages/admin/AdminExhibitiondetail";
 import Exhibitiondetail from "./pages/Exhibitiondetail"; //각 전시회의 정보가 있는 곳
 import Goodbye from "./pages/Goodbye";
 import ExhibitionSearchList from "./pages/ExhibitionSearchList";
+import RatingList from "./pages/RatingList";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -49,6 +50,7 @@ function App() {
         <Route path="/MyPage" element={<MyPage />} />
         <Route path="/Recommend" element={<Recommend />} />
         <Route path="/Rating/:id" element={<Rating />} />
+        <Route path="/RatingList" element={<RatingList />} />
         <Route path="/SignUpComplete" element={<SignUpComplete />} />
         <Route
           path="/Welcome"
