@@ -68,7 +68,6 @@ const RegisterForm = ({ history }) => {
       console.log("회원가입 성공");
       console.log(auth);
       navigate("/SignUpComplete");
-      //dispatch(register_check());
     }
   }, [auth, authError, dispatch]);
   // user 값이 잘 설정되었는지 확인

@@ -112,13 +112,10 @@ async function fetchAndStoreData() {
 fetchAndStoreData();
 // 여기까지 주석처리
 */
-// app.use(express.static(path.join(__dirname, "/build")));
-// app.get("/", (req, res) =>
-//   res.sendFile(path.join(__dirname, "/build/index.html"))
-// );
-// app.get("*", (req, res) =>
-//   res.sendFile(path.join(__dirname, "/build/index.html"))
-// );
+app.use("/artroot", express.static(path.join(__dirname, "/build")));
+app.get("/artroot", (req, res) =>
+  res.sendFile(path.join(__dirname, "/build/index.html"))
+);
 
 //로그인
 app.post("/LogIn", (req, res) => {
@@ -327,7 +324,7 @@ app.post("/FindPW", (req, res) => {
 });
 
 //사용자 정보 조회
-app.get("/mypage", (req, res) => {
+app.get("/api/mypage", (req, res) => {
   if (req.session.username) {
     const username = req.session.username; // 세션에서 사용자 이름 가져오기
     // 데이터베이스에서 사용자 정보 조회
@@ -754,6 +751,9 @@ app.delete("/admin/exhibitions/:id", (req, res) => {
   });
 });
 
+app.get("/artroot/*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/build/index.html"))
+);
 // 서버 시작
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);

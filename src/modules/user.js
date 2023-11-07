@@ -9,22 +9,14 @@ import createRequestSaga, {
 
 const TEMP_SET_USER = "user/TEMP_SET_USER"; // 새로고침 이후 임시 로그인 처리
 // 회원 정보 확인
-const [REGISTER_CHECK, REGISTER_CHECK_SUCCESS, REGISTER_CHECK_FAILURE] =
-  createRequestActionTypes("user/REGISTER_CHECK");
 const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] =
   createRequestActionTypes("user/CHECK");
 const LOGOUT = "user/LOGOUT";
 export const tempSetUser = createAction(TEMP_SET_USER, (user) => user);
 export const check = createAction(CHECK);
-//export const check = createAction(CHECK, (username) => ({ username }));
-export const register_check = createAction(REGISTER_CHECK);
 export const logout = createAction(LOGOUT);
 
 const checkSaga = createRequestSaga(CHECK, authAPI.check);
-// const regsitercheckSaga = createRequestSaga(
-//   REGISTER_CHECK,
-//   authAPI.register_check
-// );
 
 function checkFailureSaga() {
   try {
@@ -33,13 +25,6 @@ function checkFailureSaga() {
     console.log("localStorage is not working");
   }
 }
-// function registercheckFailureSaga() {
-//   try {
-//     localStorage.removeItem("user"); // localStorage 에서 user 제거하고
-//   } catch (e) {
-//     console.log("localStorage is not working");
-//   }
-// }
 
 function* logoutSaga() {
   try {
@@ -53,7 +38,6 @@ export function* userSaga() {
   yield takeLatest(CHECK, checkSaga);
   yield takeLatest(CHECK_FAILURE, checkFailureSaga);
   yield takeLatest(LOGOUT, logoutSaga);
-  //yield takeLatest(REGISTER_CHECK_FAILURE, registercheckFailureSaga);
 }
 
 const initialState = {
@@ -77,16 +61,6 @@ export default handleActions(
       user: null,
       checkError: error,
     }),
-    // [REGISTER_CHECK_SUCCESS]: (state, { payload: user }) => ({
-    //   ...state,
-    //   user,
-    //   checkError: null,
-    // }),
-    // [REGISTER_CHECK_FAILURE]: (state, { payload: error }) => ({
-    //   ...state,
-    //   user: null,
-    //   checkError: error,
-    // }),
     [LOGOUT]: (state) => ({
       ...state,
       user: null,

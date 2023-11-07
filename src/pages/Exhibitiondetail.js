@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./detail.css";
-import axios from "axios";
+import { detail } from "../lib/api/exhibition.js";
 import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
@@ -11,9 +11,7 @@ const Exhibitiondetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `/Exhibitiondetail/${id}` // Use the 'id' parameter in the URL
-        );
+        const response = await detail({ id });
 
         setExhibitionData(response.data);
       } catch (e) {

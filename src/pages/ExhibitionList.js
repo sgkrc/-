@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { allList } from "../lib/api/exhibition.js";
 import ExhibitionItem from "../ExhibitionItem";
 import "./home.css";
 const ExhibitionList = () => {
@@ -8,7 +8,7 @@ const ExhibitionList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/AllExhibitions"); // 데이터베이스에서 전시회 정보를 가져오는 엔드포인트로 변경해야 합니다.
+        const response = await allList(); // 데이터베이스에서 전시회 정보를 가져오는 엔드포인트로 변경해야 합니다.
 
         setData(response.data);
       } catch (e) {

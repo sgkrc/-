@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { search } from "../lib/api/exhibition"; // Axios 라이브러리 추가
 function ExhibitionSearchList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -18,13 +18,13 @@ function ExhibitionSearchList() {
       if (query) {
         setLoading(true); // 로딩 시작
         setSearchResults([]); // 초기화
-        const response = await fetch(
-          `/ExhibitionSearchList?query=${encodeURIComponent(query)}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setSearchResults(data.results); // 데이터로 업데이트
-          console.log("검색 결과(ebs2):", data.results);
+        // Axios를 사용하여 서버로 GET 요청을 보냄
+        const response = await search(query);
+
+        if (response.status === 200) {
+          // 성공적으로 데이터를 받았을 때
+          setSearchResults(response.data.results); // 데이터로 업데이트
+          console.log("검색 결과(ebs2):", response.data.results);
         } else {
           console.error("검색 결과를 불러오는데 실패했습니다.");
         }

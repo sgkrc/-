@@ -10,33 +10,18 @@ export const register = ({ username, password, name, email }) =>
   client.post("/Register", { username, password, name, email });
 
 // 로그인 상태 확인
-export const check = () => client.get("/Welcome");
-/*
-export const check = (username) =>
-  client.get(
-    "/Welcome",
-    {
-      params: {
-        //params 값으로 전달
-        username: username, // 사용자명 대신 실제 아이디 또는 사용자명 입력
-      },
-    },
-    { withCredentials: true }
-  );
-*/
-// 회원가입 상태 확인
-//export const register_check = () => client.get("/SignUpComplete");
+export const check = () => client.get("/check");
 
 // 로그아웃
 export const logout = () => client.post("/Logout");
 
 //아이디 찾기
 export const findID = ({ name, email }) =>
-  client.post("/FindID", { name, email });
+  client.post("/findID", { name, email });
 
 //비밀번호 찾기
 export const findPW = ({ username, email }) =>
-  client.post("/FindPW", { username, email });
+  client.post("/findPW", { username, email });
 
 //마이페이지 정보 조회
 export const mypage = () => client.get("/mypage");
