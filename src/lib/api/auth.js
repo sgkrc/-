@@ -33,3 +33,5 @@ export const updateMy = ({ name, email, newPassword }) =>
 //회원 탈퇴
 export const deleteAccount = ({ username }) =>
   client.delete("/deleteAccount", { username });
+=======
+>>>>>>> ca4d79aed6f987ec1ea09a9f07e554afe7275bed

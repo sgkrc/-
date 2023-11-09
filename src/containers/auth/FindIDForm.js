@@ -79,6 +79,16 @@ const FindIDForm = ({ history }) => {
         error={error}
       />
     </div>
+<<<<<<< HEAD
+=======
+    // <FindAuthForm
+    //   type="id"
+    //   form={form}
+    //   onChange={onChange}
+    //   onSubmit={onSubmit}
+    //   error={error}
+    // />
+>>>>>>> ca4d79aed6f987ec1ea09a9f07e554afe7275bed
   );
 };
 
