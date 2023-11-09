@@ -25,6 +25,9 @@ import ExhibitionSearchList from "./pages/ExhibitionSearchList";
 import RatingList from "./pages/RatingList";
 import RecommendedExhibition from "./pages/RecommendedExhibition";
 import Question from "./pages/Question";
+import Recommend from "./pages/Recommend";
+import AdminRecommend from "./pages/admin/AdminRecommend";
+import DiscountExhibition from "./pages/DiscountExhibition";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -54,6 +57,7 @@ function App() {
           element={<RecommendedExhibition />}
         />
         <Route path="/MyPage" element={<MyPage />} />
+        <Route path="/Recommend" element={<Recommend />} />
         <Route path="/Rating/:id" element={<Rating />} />
         <Route path="/RatingList" element={<RatingList />} />
         <Route path="/SignUpComplete" element={<SignUpComplete />} />
@@ -69,12 +73,14 @@ function App() {
         <Route path="/AdminPage" element={<AdminPage />} />
         <Route path="/AdminMain" element={<AdminMain />} />
         <Route path="/AdminExhibitionList" element={<AdminExhibitionList />} />
+        <Route path="/AdminRecommend" element={<AdminRecommend />} />
         <Route
           path="/AdminExhibitiondetail/:id"
           element={<AdminExhibitiondetail />}
         />
         <Route path="/ExhibitionAdd" element={<ExhibitionAdd />} />
         <Route path="/Exhibitiondetail/:id" element={<Exhibitiondetail />} />
+        <Route path="/DiscountExhibition" element={<DiscountExhibition />} />
         <Route path="/Goodbye" element={<Goodbye />} />
         <Route
           path="/ExhibitionSearchList"

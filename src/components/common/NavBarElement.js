@@ -108,7 +108,7 @@ const NavBarElement = ({ user, onLogout }) => {
               <NavDropdown.Item href="/RecommendedExhibition">
                 추천 전시회
               </NavDropdown.Item>
-              <NavDropdown.Item href="/ExhibitionList">
+              <NavDropdown.Item href="/DiscountExhibition">
                 할인 전시회
               </NavDropdown.Item>
               <NavDropdown.Item href="/ExhibitionList">
@@ -122,7 +122,7 @@ const NavBarElement = ({ user, onLogout }) => {
             <Nav.Link href="/RatingList" style={{ marginRight: "50px" }}>
               평가
             </Nav.Link>
-            <Nav.Link href="#recommend" style={{ marginRight: "50px" }}>
+            <Nav.Link href="/Recommend" style={{ marginRight: "50px" }}>
               취향 추천
             </Nav.Link>
             <Nav.Link href="/MyPage" style={{ marginRight: "50px" }}>

@@ -79,4 +79,21 @@ router.get("/RandomExhibitions", (req, res) => {
   });
 });
 
+// 할인 전시회 불러오기
+router.get("/DiscountExhibitions", (req, res) => {
+  const sql = "SELECT * FROM exhibition WHERE ART_DISCOUNT=1";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.log("에러 발생");
+      console.log(err);
+      return res.status(500).json({
+        error: "데이터베이스에서 전시회 정보를 가져오는 중 에러가 발생했습니다",
+      });
+    }
+
+    // 결과를 클라이언트에게 응답
+    res.status(200).json(results);
+  });
+});
+
 module.exports = router;
